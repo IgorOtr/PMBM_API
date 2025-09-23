@@ -26,4 +26,9 @@ class Chamado extends Model
         'ticket_service'
     ];
 
+    public function respostas()
+    {
+        return $this->morphMany(TicketAnswer::class, 'ticket');
+    }
+
 }

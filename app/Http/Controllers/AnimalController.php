@@ -52,7 +52,7 @@ class AnimalController extends Controller
             return $location['lat'];
         }
 
-        return null;
+        return 0;
     }
 
     public function getLng($endereco)
@@ -72,7 +72,7 @@ class AnimalController extends Controller
             return $location['lng'];
         }
 
-        return null;
+        return 0;
     }
 
 
@@ -135,6 +135,7 @@ class AnimalController extends Controller
             'animal_subject' => 'required|string|max:255',
             'animal_description' => 'required|string',
             'animal_address' => 'required|string',
+            'animal_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         if ($request->hasFile('animal_image')) {

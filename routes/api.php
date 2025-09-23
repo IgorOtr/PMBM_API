@@ -6,11 +6,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChamadoController;
 use App\Http\Controllers\RuralController;
 use App\Http\Controllers\AnimalController;
-
+use App\Models\User;
 
 //Rotas de autenticação
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::get('/users', [UserController::class, 'users']); //Rota apenas para teste
 
 Route::middleware('auth:sanctum')->group(function () {
 

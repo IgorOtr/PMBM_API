@@ -40,4 +40,9 @@ class Animal extends Model
             }
         });
     }
+
+    public function respostas()
+    {
+        return $this->morphMany(TicketAnswer::class, 'ticket');
+    }
 }

@@ -9,6 +9,15 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
+
+    public function users() 
+    {
+        $users = User::where('role', 'user')->get();
+
+        return response()->json([
+            'users' => $users
+        ]);
+    }
     // Registro de usuário
     public function register(Request $request)
     {

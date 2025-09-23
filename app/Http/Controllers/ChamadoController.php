@@ -17,7 +17,7 @@ class ChamadoController extends Controller
             return response()->json(['error' => 'Você precisa estar logado para abrir um chamado.'], 401);
         }
 
-        $chamados = Chamado::where('user_cpf', $request->user()->cpf)->orderBy('id', 'desc')->get();
+        $chamados = Chamado::where('user_cpf', $request->user()->cpf)->orderBy('id', 'desc')->with('respostas')->get();
 
         return response()->json([
             'chamados' => $chamados
@@ -55,7 +55,7 @@ class ChamadoController extends Controller
             return $location['lat'];
         }
 
-        return null;
+        return 0;
     }
 
     public function getLng($endereco)
@@ -75,7 +75,7 @@ class ChamadoController extends Controller
             return $location['lng'];
         }
 
-        return null;
+        return 0;
     }
 
 
@@ -91,6 +91,7 @@ class ChamadoController extends Controller
             'ticket_subject' => 'required|string|max:255',
             'ticket_address' => 'required|string|max:255',
             'ticket_description' => 'required|string',
+            'ticket_file_name' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         // Upload do arquivo

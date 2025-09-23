@@ -25,4 +25,9 @@ class Rural extends Model
         'ticket_description',
         'ticket_status',
     ];
+
+    public function respostas()
+    {
+        return $this->morphMany(TicketAnswer::class, 'ticket');
+    }
 }
