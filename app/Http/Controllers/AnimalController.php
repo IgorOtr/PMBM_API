@@ -15,7 +15,11 @@ class AnimalController extends Controller
             return response()->json(['error' => 'Você precisa estar logado para abrir um chamado.'], 401);
         }
 
-        $castracoes = Animal::where('user_cpf', $request->user()->cpf)->where('service', 'castracao-animal')->orderBy('id', 'desc')->get();
+        $castracoes = Animal::where('user_cpf', $request->user()->cpf)->where('service', 'castracao-animal')->orderBy('id', 'desc')
+                        ->with(['respostas' => function ($query) {
+                            $query->where('is_visible_to_user', 1);
+                        }])
+                        ->get();
 
         return response()->json([
             'castracoes' => $castracoes
@@ -28,7 +32,12 @@ class AnimalController extends Controller
             return response()->json(['error' => 'Você precisa estar logado para abrir um chamado.'], 401);
         }
 
-        $denuncias = Animal::where('user_cpf', $request->user()->cpf)->where('service', 'denuncia-animal')->orderBy('id', 'desc')->get();
+        $denuncias = Animal::where('user_cpf', $request->user()->cpf)->where('service', 'denuncia-animal')->orderBy('id', 'desc')
+                        ->with(['respostas' => function ($query) {
+                            $query->where('is_visible_to_user', 1)
+                            ->where('secretaria', 'smpa');
+                        }])
+                        ->get();
 
         return response()->json([
             'denuncias' => $denuncias

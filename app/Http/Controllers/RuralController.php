@@ -11,13 +11,20 @@ use App\Http\Controllers\ChamadoController;
 class RuralController extends Controller
 {
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         if (!$request->user()) {
             return response()->json(['error' => 'Você precisa estar logado para abrir um chamado.'], 401);
         }
 
-        $chamados = Rural::where('user_cpf', $request->user()->cpf)->orderBy('id', 'desc')->get();
+        $chamados = Rural::where('user_cpf', $request->user()->cpf)
+            ->orderBy('id', 'desc')
+            ->with(['respostas' => function ($query) {
+                $query->where('is_visible_to_user', 1)
+                ->where('secretaria', 'smdr');
+            }])
+            ->get();
+
 
         return response()->json([
             'chamados-rurais' => $chamados
@@ -63,6 +70,5 @@ class RuralController extends Controller
             'message' => 'Chamado aberto com sucesso!',
             'chamado-rural' => $rural
         ], 201);
-
     }
 }

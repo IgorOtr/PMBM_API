@@ -17,7 +17,13 @@ class ChamadoController extends Controller
             return response()->json(['error' => 'Você precisa estar logado para abrir um chamado.'], 401);
         }
 
-        $chamados = Chamado::where('user_cpf', $request->user()->cpf)->orderBy('id', 'desc')->with('respostas')->get();
+        $chamados = Chamado::where('user_cpf', $request->user()->cpf)
+                        ->orderBy('id', 'desc')
+                        ->with(['respostas' => function ($query) {
+                            $query->where('is_visible_to_user', 1)
+                                  ->where('secretaria', 'smmu');
+                        }])
+                        ->get();
 
         return response()->json([
             'chamados' => $chamados
